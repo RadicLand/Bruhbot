@@ -1,113 +1,85 @@
-# A Discord Music Bot written in JavaScript, the discord.js library and discord.js-commando framework
+# Музыкальный бот для Discord, написанный на Javascript и использующий discordjs и discordjs-commando фреймворк. Перевод 70-80%, т.к у меня кривые руки и я многое не понимаю за неимением большого опыта ¯\_(ツ)_/¯
+Оригинальный репозиторий -> https://github.com/galnir/Master-Bot
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 
-### Installing the dependencies
+### Установка/настройка
 
+Первым делом нужно выполнить команду для установки зависимостей:
 `npm i`
 
-### Setup
+Затем добавить токен авторизации бота и токены авторизации дополнительных сервисов в ./config.json
+А также добавить свой id в ./index.js в `owner: "Your Owner ID"`
 
-Make a config.json file in the root directory of the project and add:
+**Токены можно получить здесь:**
 
-```
-{
-  "prefix": "!",  // You can change the prefix to whatever you want it doesn't have to be - !
-  "token": "Your-Bot-Token",
-  "tenorAPI": "tenor-API-key",
-  "newsAPI": "news-api-key",
-  "youtubeAPI": "youtube-api-key",
-  "yandexAPI": "yandex-api-key",
-  "geniusLyricsAPI": "genius-api-key"
-}
-```
+[Discord](https://discordapp.com/developers/applications/)
 
-I run the bot on a debian 9 environment so it might not work as intended on other operating systems, if you need a guide on how to install node.js on debian 9 or ubuntu I will link one in the resources down below.
+[Youtube(для проигрывания музыки)](https://developers.google.com/youtube/v3/getting-started)
 
-Also, no matter what operating system you have, make sure [ffmpeg](https://www.ffmpeg.org/download.html) and [python 2.7](https://www.python.org/downloads/) are installed.
+[Tenor(для отправки гиф)](https://tenor.com/developer/keyregistration)
 
-If you are not cloning this repo, make sure your dependencies versions are the same as this repo's.
+[NewsAPI(для отправки новостного контента)](https://newsapi.org/)
 
-### Commands
+[YandexTranslate(для перевода текста через команду ;translate)](https://translate.yandex.com/developers/keys)
 
-- Music
+[Genius(для отправки текста песен)](https://genius.com/api-clients/new)
 
-| Command       | Description                                                                                                               | Usage                  |
+
+**Убедитесь, что в вашей системе(Windows/Linux) установлены [ffmpeg](https://www.ffmpeg.org/download.html) и [python 2.7](https://www.python.org/downloads/).**
+
+Бот тестировался на Debian 9 изначальным автором этого бота и мной на Windows 10 версии 1909. В обоих вариантах всё работает без каких-либо ошибок.
+
+### Команды
+
+**;help - отправляет в ЛС список всех доступных команд**
+
+- Музыка
+
+| Команда       | Описание                                                                                                                | Синтаксис                  |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| !play         | Play any song or playlist from youtube, you can do it by searching for a song by name or song url or playlist url         | !play darude sandstorm |
-| !pause        | Pause the current playing song                                                                                            | !pause                 |
-| !resume       | Resume the current paused song                                                                                            | !resume                |
-| !leave        | Leaves voice channel if in one                                                                                            | !leave                 |
-| !remove       | Remove a specific song from queue by its number in queue                                                                  | !remove 4              |
-| !queue        | Display the song queue                                                                                                    | !queue                 |
-| !shuffle      | Shuffle the song queue                                                                                                    | !shuffle               |
-| !skip         | Skip the current playing song                                                                                             | !skip                  |
-| !skipall      | Skip all songs in queue                                                                                                   | !skipall               |
-| !skipto       | Skip to a specific song in the queue, provide the song number as an argument                                              | !skipto 5              |
-| !volume       | Adjust song volume                                                                                                        | !volume 80             |
-| !music-trivia | Engage in a music trivia with your friends. You can add more songs to the trivia pool in resources/music/musictrivia.json | !music-trivia          |
-| !loop         | Loop the currently playing song                                                                                           | !loop                  |
-| !lyrics       | Get lyrics of any song or the lyrics of the currently playing song                                                        | !lyrics song-name      |
+| ;play                                                                                                                                          | Включает любой трек или плейлист с Youtube                                                                              | ;play despacito        |
+| ;pause                                                                                                                                          | Ставит текущий трек на паузу                                                                                            | ;pause                 |
+| ;resume                                                                                                                                        | Возобновляет трек поставленный на паузу                                                                                 | ;resume                |
+| ;leave                                                                                                                                          | Выходит из голосового канала                                                                                            | ;leave                 |
+| ;remove                                                                                                                                        | Удаляет трек из очереди(нужно указать его номер)                                                                        | ;remove 2              |
+| ;queue                                                                                                                                          | Показывает текущую очередь треков                                                                                       | ;queue                 |
+| ;shuffle                                                                                                                                        | Перемешивает текущие треки в очереди                                                                                    | ;shuffle               |
+| ;skip                                                                                                                                          | Пропускает текущий трек                                                                                                 | ;skip                  |
+| ;skipall                                                                                                                                        | Пропускает все треки в текущей очереди                                                                                  | ;skipall               |
+| ;skipto                                                                                                                                        | Пропускает всю очередь до указанного трека, нужно указать номер трека в сообщении                                       | ;skipto 5              |
+| ;volume                                                                                                                                        | Меняет текущую громкость                                                                                                | ;volume 80             |
+| ;music-trivia                                                                                                                                  | Что-то вроде музыкальной викторины, в дальнейшем будет называться Тривия. Добавить больше песен можно тут ->  ./resources/music/musictrivia.json | ;music-trivia          |
+| ;loop                                                                                                                                          | Ставит текущий трек на повтор                                                                                           | ;loop                  |
+| ;lyrics                                                                                                                                        | Отправляет текст трека по запросу или текст уже играющего трека                                                         | ;lyrics billie eilish bad guy      |
 
-- Misc
+- Разные
 
-| Command      | Description                                                                                                                                                         | Usage                 |
+| Команда      | Описание                                                                                                                                                            | Синтаксис             |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| !cat         | Get a cute cat picture                                                                                                                                              | !cat                  |
-| !fortune     | Get a fortune cookie tip                                                                                                                                            | !fortune              |
-| !insult      | Generate an evil insult                                                                                                                                             | !insult               |
-| !chucknorris | Get a satirical fact about Chuck Norris                                                                                                                             | !chucknorris          |
-| !motivation  | Get a random motivational quote                                                                                                                                     | !motivation           |
-| !global-news | Latest headlines from reuters, you can change the news source to whatever news source you want, just change the source in line 13 in global-news.js or ynet-news.js | !global-news          |
-| !random      | Generate a random number between two provided numbers                                                                                                               | !random 0 100         |
-| !reddit      | Replies with 5 top non nsfw subreddit posts                                                                                                                         | !reddit askreddit     |
-| !say         | Make the bot say anything                                                                                                                                           | !say Lorem Ipsum      |
-| !translate   | Translate to any language using yandex translation service(only supported lanugages)                                                                          | !translate ありがとう |
-| !whomademe   | Info about me and the repo                                                                                                                                          | !whomademe            |
-| !uptime      | Replies with the bot's total uptime                                                                                                                                 | !uptime               |
+| ;cat         | Отправляет гиф с кошкой :)                                                                                                                                          | ;cat                  |
+| ;ded         | Отправляет рандомную цитату Деда-Футбольного мячика                                                                                                                  | ;ded                  |
+| ;random      | Генерирует рандомное число в промежутке от одного до другого                                                                                                        | ;random 0 100         |
+| ;randquote   | Отправляет рандомную цитату(внимание, они на английском, т.к не нашёл, чем их заменить)                                                                              | ;randquote            |
+| ;runews      | Отправляет 5 последних новостей из России                                                                                                                            | ;runews               |
+| ;say         | Заставляет бота сказать что угодно :)                                                                                                                                | ;say Апчхи!           |
+| ;translate   | Переводит отправленное сообщение, указывать целевой язык нужно на английском                                                                                        | ;translate ありがとう  |
+| ;uptime      | Отправляет текущее время работы бота                                                                                                                                | ;uptime               |
+| ;worldnews   | Отправляет последние 5 мировых новостей                                                                                                                              | ;worldnews            |
 
-- Gifs
+- Гиф
 
-| Command   | Description                         | Usage                   |
+| Команда   | Описание                            | Синтаксис               |
 | --------- | ----------------------------------- | ----------------------- |
-| !animegif | Get an anime related gif by a query | !animegif one punch man |
-| !gif      | Get any gif by a query              | !gif labrador           |
-| !gintama  | Replies with a random gintama gif   | !gintama                |
-| !jojo     | Replies with a random jojo gif       | !jojo                   |
+| ;animegif | Отправляет гиф персонажа/аниме!     | ;animegif one punch man |
+| ;gif      | Отправляет гиф по заданному запросу | ;gif cheesecake         |
+| ;gintama  | Отправляет гиф связанную с Гинтамой | ;gintama                |
+| ;jojo     | Отправляет гиф связанную с ЖОЖО     | ;jojo                   |
 
-- Guild
+- Серверные команды
 
-| Command               | Description                     | Usage                                 |
+| Команда               | Описание                        | Синтаксис                             |
 | --------------------- | ------------------------------- | ------------------------------------- |
-| !ban                  | Bans a tagged member            | !ban @johndoe                         |
-| !kick                 | Kicks a tagged member           | !kick @johndoe                        |
-| !prune                | Delete up to 99 recent messages | !prune 50                             |
+| ;ban                  | Банит указанного участника      | ;ban @discordbot                      |
+| ;kick                 | Кикает указанного участника     | ;kick @discordbot                     |
+| ;prune                | Удаляет до 99 сообщений         | ;prune 20                             |
 
-### Resources
-
-[Get a Tenor API key here](https://tenor.com/developer/keyregistration)
-
-[Get a NewsAPI API key here](https://newsapi.org/)
-
-[How to get a Youtube API key](https://developers.google.com/youtube/v3/getting-started)
-
-[Get a Yandex API key here](https://translate.yandex.com/developers/keys)
-
-[Get a Genius API key here](https://genius.com/api-clients/new)
-
-[Installing node.js on debian](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-debian-9)
-
-[Installing node.js on Windows](https://treehouse.github.io/installation-guides/windows/node-windows.html)
-
-### Contributing
-
-Fork it and submit a pull request!
-Anyone is welcome to suggest new features and improve code quality!
-
-### Tasks
-
-* Change framework (probably to akairo)
-
-## Contributors
-
-[encoder-glitch](https://github.com/encoder-glitch) - uptime command
