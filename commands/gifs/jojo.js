@@ -10,7 +10,7 @@ module.exports = class JojoCommand extends Command {
       aliases: ['jojo-gif', 'jojo-gifs'],
       group: 'gifs',
       memberName: 'jojo',
-      description: 'Replies with a random jojo gif!',
+      description: 'Отправляет гиф связанную с ЖОЖО!',
       throttling: {
         usages: 2,
         duration: 8
@@ -50,7 +50,7 @@ module.exports = class JojoCommand extends Command {
         })
       */
     } catch (e) {
-      message.say('Failed to fetch a gif :slight_frown:');
+      message.say('Не удалось найти гиф из ЖОЖО :slight_frown:');
       return console.error(e);
     }
   }

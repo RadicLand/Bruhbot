@@ -4,8 +4,8 @@ module.exports = class PruneCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'prune',
-      aliases: ['delete-messages', 'bulk-delete'],
-      description: 'Delete up to 99 recent messages',
+      aliases: ['delete', 'clear', 'nuke'],
+      description: 'Удалить до 99 сообщений',
       group: 'guild',
       memberName: 'prune',
       guildOnly: true,
@@ -13,7 +13,7 @@ module.exports = class PruneCommand extends Command {
       args: [
         {
           key: 'deleteCount',
-          prompt: 'How many messages do you want to delete?',
+          prompt: 'Сколько сообщений нужно удалить? (Максимум 99)',
           type: 'integer',
           validate: deleteCount => deleteCount < 100 && deleteCount > 0
         }
@@ -24,11 +24,11 @@ module.exports = class PruneCommand extends Command {
   run(message, { deleteCount }) {
     message.channel
       .bulkDelete(deleteCount)
-      .then(messages => message.say(`Deleted ${messages.size} messages`))
+      .then(messages => message.say(`Удалено ${messages.size} сообщений`))
       .catch(e => {
         console.error(e);
         return message.say(
-          'Something went wrong when trying to delete messages :('
+          'Что-то пошло не так при попытке удалить сообщения :('
         );
       });
   }

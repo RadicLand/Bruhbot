@@ -9,22 +9,22 @@ module.exports = class QueueCommand extends Command {
       group: 'music',
       memberName: 'queue',
       guildOnly: true,
-      description: 'Display the song queue'
+      description: 'Показать текущую очередь треков'
     });
   }
 
   run(message) {
     if (message.guild.triviaData.isTriviaRunning)
-      return message.say('Try again after the trivia has ended');
+      return message.say('Попробуйте снова после окончания Тривии');
     if (message.guild.musicData.queue.length == 0)
-      return message.say('There are no songs in queue!');
+      return message.say('Нет треков в очереди!');
     const titleArray = [];
     message.guild.musicData.queue.map(obj => {
       titleArray.push(obj.title);
     });
     var queueEmbed = new MessageEmbed()
       .setColor('#ff7373')
-      .setTitle('Music Queue');
+      .setTitle('Текущая очередь:');
     for (let i = 0; i < titleArray.length; i++) {
       queueEmbed.addField(`${i + 1}:`, `${titleArray[i]}`);
     }

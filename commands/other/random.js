@@ -4,19 +4,19 @@ module.exports = class RandomNumberCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'random',
-      aliases: ['random-number', 'number-between'],
+      aliases: ['rnd', 'rand'],
       memberName: 'random',
       group: 'other',
-      description: 'Generate a random number between two provided numbers',
+      description: 'Генерирует рандомное число от одного до другого',
       args: [
         {
           key: 'min',
-          prompt: 'What is the minimum number?',
+          prompt: 'Число от?',
           type: 'integer'
         },
         {
           key: 'max',
-          prompt: 'What is the maximum number?',
+          prompt: 'Число до?',
           type: 'integer'
         }
       ]

@@ -9,7 +9,7 @@ module.exports = class GintamaCommand extends Command {
       name: 'gintama',
       group: 'gifs',
       memberName: 'gintama',
-      description: 'Replies with a gintama gif!',
+      description: 'Отправляет гиф связанную с Гинтамой!',
       throttling: {
         usages: 2,
         duration: 8
@@ -48,7 +48,7 @@ module.exports = class GintamaCommand extends Command {
         })
       */
     } catch (e) {
-      message.say('Failed to fetch a gintama gif :slight_frown:');
+      message.say('Не удалось найти гиф из Гинтамы :slight_frown:');
       return console.error(e);
     }
   }

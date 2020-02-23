@@ -7,23 +7,23 @@ module.exports = class ShuffleQueueCommand extends Command {
       name: 'shuffle',
       memberName: 'shuffle',
       group: 'music',
-      description: 'Shuffle the song queue',
+      description: 'Перемешивает текущие треки в очереди',
       guildOnly: true
     });
   }
   run(message) {
     var voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Join a channel and try again');
+    if (!voiceChannel) return message.reply('Войдите в голосовой канал и попробуйте снова');
 
     if (
       typeof message.guild.musicData.songDispatcher == 'undefined' ||
       message.guild.musicData.songDispatcher == null
     ) {
-      return message.reply('There is no song playing right now!');
+      return message.reply('Сейчас ничего не играет!');
     }
 
     if (message.guild.musicData.queue.length < 1)
-      return message.say('There are no songs in queue');
+      return message.say('Нет треков в очереди!');
 
     shuffleQueue(message.guild.musicData.queue);
 
@@ -33,7 +33,7 @@ module.exports = class ShuffleQueueCommand extends Command {
     });
     var queueEmbed = new MessageEmbed()
       .setColor('#ff7373')
-      .setTitle('New Music Queue');
+      .setTitle('Новый список: ');
     for (let i = 0; i < titleArray.length; i++) {
       queueEmbed.addField(`${i + 1}:`, `${titleArray[i]}`);
     }

@@ -8,7 +8,7 @@ module.exports = class VolumeCommand extends Command {
       group: 'music',
       memberName: 'volume',
       guildOnly: true,
-      description: 'Adjust song volume',
+      description: 'Меняет текущую громкость',
       throttling: {
         usages: 1,
         duration: 5
@@ -16,7 +16,7 @@ module.exports = class VolumeCommand extends Command {
       args: [
         {
           key: 'wantedVolume',
-          prompt: 'What volume would you like to set? from 1 to 200',
+          prompt: 'Укажите громкость (от 1 до 200)',
           type: 'integer',
           validate: wantedVolume => wantedVolume >= 1 && wantedVolume <= 200
         }
@@ -26,16 +26,17 @@ module.exports = class VolumeCommand extends Command {
 
   run(message, { wantedVolume }) {
     const voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Join a channel and try again');
+    if (!voiceChannel) return message.reply('Войдите в голосовой канал и попробуйте снова');
 
     if (
       typeof message.guild.musicData.songDispatcher == 'undefined' ||
       message.guild.musicData.songDispatcher == null
     ) {
-      return message.reply('There is no song playing right now!');
+      return message.reply('Сейчас ничего не играет!');
     }
     const volume = wantedVolume / 100;
-    message.guild.musicData.volume = volume;
+	message.guild.musicData.volume = volume;
     message.guild.musicData.songDispatcher.setVolume(volume);
+	message.say(`Текущая громкость: ${wantedVolume}%`);
   }
 };

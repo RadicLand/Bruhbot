@@ -7,23 +7,23 @@ module.exports = class PauseCommand extends Command {
       aliases: ['pause-song', 'hold', 'stop'],
       memberName: 'pause',
       group: 'music',
-      description: 'Pause the current playing song',
+      description: 'Ставит текущий трек на паузу',
       guildOnly: true
     });
   }
 
   run(message) {
     var voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Join a channel and try again');
+    if (!voiceChannel) return message.reply('Войдите в голосовой канал и попробуйте снова');
 
     if (
       typeof message.guild.musicData.songDispatcher == 'undefined' ||
       message.guild.musicData.songDispatcher == null
     ) {
-      return message.say('There is no song playing right now!');
+      return message.say('Сейчас ничего не играет!');
     }
 
-    message.say('Song paused :pause_button:');
+    message.say('Пауза :pause_button:');
 
     message.guild.musicData.songDispatcher.pause();
   }

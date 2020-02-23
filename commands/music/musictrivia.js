@@ -9,7 +9,7 @@ module.exports = class MusicTriviaCommand extends Command {
       name: 'music-trivia',
       memberName: 'music-trivia',
       group: 'music',
-      description: "Engage in a 2000's music quiz with your friends!",
+      description: 'Попробуйте угадать треки 2000-х с друзьями!',
       guildOnly: true,
       clientPermissions: ['SPEAK', 'CONNECT'],
       throttling: {
@@ -22,9 +22,9 @@ module.exports = class MusicTriviaCommand extends Command {
     // check if user is in a voice channel
     var voiceChannel = message.member.voice.channel;
     if (!voiceChannel)
-      return message.say('Please join a voice channel and try again');
+      return message.say('Войдите в голосовой канал и попробуйте снова');
     if (message.guild.musicData.isPlaying === true)
-      return message.channel.send('A trivia or a song is already running');
+      return message.channel.send('Тривия или какой-то другой трек уже играет');
     message.guild.musicData.isPlaying = true;
     message.guild.triviaData.isTriviaRunning = true;
     // fetch link array from txt file
@@ -34,15 +34,15 @@ module.exports = class MusicTriviaCommand extends Command {
     );
     var videoDataArray = JSON.parse(jsonSongs).songs;
     // get random x videos from array
-    const numOfLinks = 5;
+    const numOfLinks = 10;
     const randomXVideoLinks = this.getRandom(videoDataArray, numOfLinks); // get x random urls
     // create and send info embed
     const infoEmbed = new MessageEmbed()
       .setColor('#ff7373')
-      .setTitle('Starting Music Quiz')
+      .setTitle('Начинаем!')
       .setDescription(
-        `Get ready! There are ${numOfLinks} songs, you have 30 seconds to guess either the singer/band or the name of the song. Good luck!
-        You can end the trivia at any point by using the end-trivia command`
+        `Готовьтесь! Будет ${numOfLinks} треков, у вас будет 30 секунд, чтобы угадать певца/группу или название трека. Удачи!
+        Вы можете закончить Тривию написав команду end-trivia в любой момент!`
       );
     message.say(infoEmbed);
     // init quiz queue
@@ -79,7 +79,7 @@ module.exports = class MusicTriviaCommand extends Command {
         )
         .on('start', () => {
           message.guild.musicData.songDispatcher = dispatcher;
-          dispatcher.setVolume(message.guild.musicData.volume);
+		  dispatcher.setVolume(message.guild.musicData.volume);
           let songNameFound = false;
           let songSingerFound = false;
 
@@ -199,10 +199,10 @@ module.exports = class MusicTriviaCommand extends Command {
               message.guild.triviaData.isTriviaRunning = false;
               message.guild.triviaData.triviaScore.clear();
               message.guild.me.voice.channel.leave();
-              return message.channel.send('No one won. Better luck next time');
+              return message.channel.send('Никто не выиграл. Удачи в следующий раз!');
             } else {
               message.channel.send(
-                `The winner is ${winner} with ${highestTriviaScore} points`
+                `Победителем стал ${winner} с ${highestTriviaScore} очков! :clap: :clap: :clap: `
               );
               message.guild.musicData.isPlaying = false;
               message.guild.triviaData.isTriviaRunning = false;
@@ -235,7 +235,7 @@ module.exports = class MusicTriviaCommand extends Command {
     // create an embed with no fields
     const embed = new MessageEmbed()
       .setColor('#ff7373')
-      .setTitle('Trivia Score');
+      .setTitle('Текущий счёт Тривии');
 
     for (let i = 0; i < arr.length; i++) {
       embed.addField(arr[i][0] + ':', arr[i][1].score);

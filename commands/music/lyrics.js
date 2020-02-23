@@ -10,7 +10,7 @@ module.exports = class LyricsCommand extends Command {
       name: 'lyrics',
       memberName: 'lyrics',
       description:
-        'Get lyrics of any song or the lyrics of the currently playing song',
+        'Отправляет текст трека по запросу или текст уже играющего трека',
       group: 'music',
       throttling: {
         usages: 1,
@@ -21,7 +21,7 @@ module.exports = class LyricsCommand extends Command {
           key: 'songName',
           default: '',
           type: 'string',
-          prompt: 'What song lyrics would you like to get?'
+          prompt: 'Для какого трека нужен текст?'
         }
       ]
     });
@@ -34,14 +34,14 @@ module.exports = class LyricsCommand extends Command {
     ) {
       songName = message.guild.musicData.nowPlaying.title;
     } else if (songName == '' && message.guild.triviaData.isTriviaRunning) {
-      return message.say('Please try again after the trivia has ended');
+      return message.say('Попробуйте снова после окончания Тривии');
     } else if (songName == '' && !message.guild.musicData.isPlaying) {
       return message.say(
-        'There is no song playing right now, please try again with a song name or play a song first'
+        'Сейчас ничего не играет, попробуйте снова с названием трека или включите что-нибудь'
       );
     }
     const sentMessage = await message.channel.send(
-      '👀 Searching for lyrics 👀'
+      '👀 Ищу текст 👀'
     );
 
     // get song id
@@ -66,7 +66,7 @@ module.exports = class LyricsCommand extends Command {
       lyrics = lyrics.replace(/(\[.+\])/g, '');
 
       if (lyrics.length > 4095)
-        return message.say('Lyrics are too long to be returned as embed');
+        return message.say('Текст слишком большой, не могу отправить :(');
       if (lyrics.length < 2048) {
         const lyricsEmbed = new MessageEmbed()
           .setColor('#00724E')
@@ -87,7 +87,7 @@ module.exports = class LyricsCommand extends Command {
     } catch (e) {
       console.error(e);
       return sentMessage.edit(
-        'Something when wrong, please try again or be more specific'
+        'Что-то пошло не так, попробуйте снова или уточните запрос'
       );
     }
     async function getLyrics(url) {

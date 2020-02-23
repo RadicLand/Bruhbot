@@ -8,18 +8,18 @@ module.exports = class KickCommand extends Command {
       aliases: ['kick-member', 'throw'],
       memberName: 'kick',
       group: 'guild',
-      description: 'Kicks a tagged member',
+      description: 'Кикает указанного участника',
       guildOnly: true,
       userPermissions: ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS'],
       args: [
         {
           key: 'userToKick',
-          prompt: 'Who do you want to kick?',
+          prompt: 'Кого нужно кикнуть?',
           type: 'string'
         },
         {
           key: 'reason',
-          prompt: 'Why do you want to kick this user',
+          prompt: 'Укажите причину кика:',
           type: 'string'
         }
       ]
@@ -30,7 +30,7 @@ module.exports = class KickCommand extends Command {
     const user =
       message.mentions.members.first() || message.guild.members.get(userToKick);
     if (user == undefined)
-      return message.channel.send('Please try again with a valid user');
+      return message.channel.send('Проверьте никнейм и попробуйте снова');
     user
       .kick(reason)
       .then(() => {
@@ -43,7 +43,7 @@ module.exports = class KickCommand extends Command {
       })
       .catch(e => {
         message.say(
-          'Something went wrong when trying to ban this user, I probably do not have the permission to kick him'
+          'Что-то пошло не так, скорее всего у меня нет разрешений на кик :('
         );
         return console.error(e);
       });

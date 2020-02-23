@@ -4,25 +4,26 @@ module.exports = class LoopCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'loop',
+	  aliases: ['repeat'],
       group: 'music',
       memberName: 'loop',
       guildOnly: true,
-      description: 'Loop the current playing song'
+      description: 'Ставит текущий трек на повтор'
     });
   }
 
   run(message) {
     if (!message.guild.musicData.isPlaying) {
-      return message.say('There is no song playing right now!');
+      return message.say('Сейчас ничего не играет!');
     } else if (
       message.guild.musicData.isPlaying &&
       message.guild.triviaData.isTriviaRunning
     ) {
-      return message.say('You cannot loop over a trivia!');
+      return message.say('Нельзя поставить на повтор трек из Тривии!');
     }
 
     message.channel.send(
-      `${message.guild.musicData.nowPlaying.title} added to queue`
+      `${message.guild.musicData.nowPlaying.title} добавлен в очередь`
     );
     message.guild.musicData.queue.unshift(message.guild.musicData.nowPlaying);
     return;

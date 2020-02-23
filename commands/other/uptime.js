@@ -7,7 +7,7 @@ module.exports = class UptimeCommand extends Command {
       aliases: ['alive', 'up'],
       memberName: 'uptime',
       group: 'other',
-      description: "Replies with the bot's total uptime."
+      description: 'Показывает текущее время работы бота'
     });
   }
   run(message) {
@@ -19,7 +19,7 @@ module.exports = class UptimeCommand extends Command {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
     return message.say(
-      `:chart_with_upwards_trend: I've been running for **${hours}** hours, **${minutes}** minutes and **${seconds}** seconds!`
+      `:chart_with_upwards_trend: Время работы **${hours}** часов, **${minutes}** минут и **${seconds}** секунд!`
     );
   }
 };

@@ -8,22 +8,22 @@ module.exports = class LeaveCommand extends Command {
       group: 'music',
       memberName: 'leave',
       guildOnly: true,
-      description: 'Leaves voice channel if in one'
+      description: 'Выходит из голосового канала'
     });
   }
 
   run(message) {
     var voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Join a channel and try again');
+    if (!voiceChannel) return message.reply('Войдите в голосовой канал и попробуйте снова');
 
     if (
       typeof message.guild.musicData.songDispatcher == 'undefined' ||
       message.guild.musicData.songDispatcher == null
     ) {
-      return message.reply('There is no song playing right now!');
+      return message.reply('Сейчас ничего не играет!');
     }
     if (!message.guild.musicData.queue)
-      return message.say('There are no songs in queue');
+      return message.say('Сейчас нет треков в очереди');
     message.guild.musicData.songDispatcher.end();
     message.guild.musicData.queue.length = 0;
     return;

@@ -11,7 +11,7 @@ module.exports = class TranslateCommand extends Command {
       memberName: 'translate',
       group: 'other',
       description:
-        'Translate to any language using yandex translation service(only supported lanugages)',
+        'Переводит отправленное сообщение используя Yandex API(только поддерживаемые языки)',
       throttling: {
         usages: 2,
         duration: 12
@@ -20,7 +20,7 @@ module.exports = class TranslateCommand extends Command {
         {
           key: 'targetLang',
           prompt:
-            'What is the target language(language you want to translate to)',
+            'На какой язык нужен перевод?',
           type: 'string',
           validate: text => text.length < 3000
         }
@@ -31,12 +31,12 @@ module.exports = class TranslateCommand extends Command {
   async run(message, { targetLang }) {
     const langCode = ISO6391.getCode(targetLang);
     if (langCode === '')
-      return message.channel.send('Please provide a valid language!');
+      return message.channel.send('Пожалуйста, напишите корректный язык!');
 
     // text needs to be less than 3000 length
 
     await message.channel.send(
-      `Please enter the text you want to translate to ${targetLang}`
+      `Пожалуйста, отправьте текст который нужно перевести на ${targetLang}`
     );
 
     try {
@@ -49,12 +49,11 @@ module.exports = class TranslateCommand extends Command {
       });
       var text = response.first().content;
     } catch (e) {
-      return message.channel.send('You did not enter any text!');
+      return message.channel.send('Вы не отправили текст!');
     }
 
     try {
       var res = await fetch(
-        // Powered by Yandex.Translate http://translate.yandex.com/
         `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPI}&text=${encodeURI(
           text
         )}&lang=${langCode}`
@@ -64,17 +63,15 @@ module.exports = class TranslateCommand extends Command {
     } catch (e) {
       console.error(e);
       return message.say(
-        'Something went wrong when trying to translate the text'
+        'Что-то пошло не так при попытке перевести текст :('
       );
     }
 
     function embedTranslation(text) {
       return new MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Yandex Translate')
         .setURL('http://translate.yandex.com/')
         .setDescription(text)
-        .setFooter('Powered by Yandex.Translate');
     }
   }
 };
