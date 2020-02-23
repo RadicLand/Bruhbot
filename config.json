@@ -1,0 +1,9 @@
+{
+  "prefix": ";",
+  "token": "Discord-Token-Here",
+  "tenorAPI": "Tenor-Token-Here",
+  "newsAPI": "NewsAPI-Token-Here",
+  "youtubeAPI": "Youtube-Token-Here",
+  "yandexAPI": "YandexTranslate-Token-Here",
+  "geniusLyricsAPI": "Genius-Token-Here"
+}
