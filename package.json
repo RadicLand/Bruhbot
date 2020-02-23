@@ -1,14 +1,14 @@
 {
-  "name": "master-bot",
-  "version": "1.0.0",
-  "description": "a discord music bot with guild , gifs and misc commands",
+  "name": "bruhbot",
+  "version": "1.0.3",
+  "description": "Music bot for Discord with opensource code, based on Master-Bot by Galnir",
   "main": "index.js",
   "scripts": {
     "start": "node .",
     "pretest": "eslint --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Nir Gal",
+  "author": "chimaerra",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
