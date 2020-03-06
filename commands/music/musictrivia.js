@@ -2,23 +2,34 @@ const { Command } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
+const trackslength = JSON.parse(fs.readFileSync('resources/music/musictrivia.json', 'utf8')).songs.length
 
 module.exports = class MusicTriviaCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'music-trivia',
+      aliases: ['musictrivia', 'trivia', 'mt'],
       memberName: 'music-trivia',
       group: 'music',
-      description: 'Попробуйте угадать треки 2000-х с друзьями!',
+      description: 'Попробуйте угадать треки с друзьями!',
       guildOnly: true,
       clientPermissions: ['SPEAK', 'CONNECT'],
       throttling: {
         usages: 1,
         duration: 10
-      }
+      },
+      args: [
+        {
+          key: 'tracksAmount',
+		  prompt: `Какое количество треков для Тривии вы хотите? Максимум ${trackslength}`,
+          type: 'integer',
+          validate: tracksAmount => tracksAmount >= 1 && tracksAmount <= trackslength
+        }
+      ]
     });
   }
-  async run(message) {
+
+  async run(message, { tracksAmount }) {
     // check if user is in a voice channel
     var voiceChannel = message.member.voice.channel;
     if (!voiceChannel)
@@ -34,15 +45,15 @@ module.exports = class MusicTriviaCommand extends Command {
     );
     var videoDataArray = JSON.parse(jsonSongs).songs;
     // get random x videos from array
-    const numOfLinks = 10;
+    var numOfLinks = tracksAmount
     const randomXVideoLinks = this.getRandom(videoDataArray, numOfLinks); // get x random urls
     // create and send info embed
     const infoEmbed = new MessageEmbed()
       .setColor('#ff7373')
       .setTitle('Начинаем!')
       .setDescription(
-        `Готовьтесь! Будет ${numOfLinks} треков, у вас будет 30 секунд, чтобы угадать певца/группу или название трека. Удачи!
-        Вы можете закончить Тривию написав команду end-trivia в любой момент!`
+        `Готовьтесь! ${numOfLinks} треков, у вас будет 60 секунд, чтобы угадать певца/группу или название трека. Удачи!
+        Вы можете закончить Тривию написав команду ;et в любой момент!`
       );
     message.say(infoEmbed);
     // init quiz queue
@@ -68,6 +79,23 @@ module.exports = class MusicTriviaCommand extends Command {
     this.playQuizSong(message.guild.triviaData.triviaQueue, message);
   }
 
+	CheckSinger(message_content, queue) {
+        var user_answer = message_content.toLocaleLowerCase();
+        var singerArray = queue[0].singer.split(',');
+
+        for (let i = 0; i < singerArray.length; i++) {
+            singerArray[i] = singerArray[i].trim().toLocaleLowerCase();
+            var singerString = `${singerArray.slice(0,i)}`.toLocaleLowerCase().replace(",", " ");
+
+            if (singerArray[i] === user_answer || user_answer === `${singerString}`) {
+                return true;
+            } else {
+                continue;
+            }
+        }
+        return false;
+    }
+
   playQuizSong(queue, message) {
     queue[0].voiceChannel.join().then(connection => {
       const dispatcher = connection
@@ -86,7 +114,7 @@ module.exports = class MusicTriviaCommand extends Command {
           const filter = m =>
             message.guild.triviaData.triviaScore.has(m.author.username);
           const collector = message.channel.createMessageCollector(filter, {
-            time: 30000
+            time: 60000
           });
 
           collector.on('collect', m => {
@@ -94,38 +122,44 @@ module.exports = class MusicTriviaCommand extends Command {
               return;
             if (m.content.startsWith(this.client.commandPrefix)) return;
             // if user guessed song name
-            if (m.content.toLowerCase() === queue[0].title) {
+            if (m.content.toLowerCase() === queue[0].title.toLowerCase()) {
               if (songNameFound) return; // if song name already found
               songNameFound = true;
 
               if (songNameFound && songSingerFound) {
                 message.guild.triviaData.triviaScore.get(m.author.username)
                   .score++;
-                m.react('☑');
+                  m.react('☑');
+                  m.reply(`Вы угадали! :orange_square: Это было ${queue[0].singer} - ${queue[0].title} :orange_square:`);
                 return collector.stop();
               }
               message.guild.triviaData.triviaScore.get(m.author.username)
-                .score++;
-              m.react('☑');
+                  .score++;
+                  m.react('☑');
+                  m.reply(`Вы угадали! :orange_square: Это было ${queue[0].singer} - ${queue[0].title} :orange_square:`);
+                return collector.stop();
             }
             // if user guessed singer
-            else if (m.content.toLowerCase() === queue[0].singer) {
+            else if (this.CheckSinger(m.content, queue)) {
               if (songSingerFound) return;
               songSingerFound = true;
               if (songNameFound && songSingerFound) {
                 message.guild.triviaData.triviaScore.get(m.author.username)
                   .score++;
-                m.react('☑');
+                  m.react('☑');
+                  m.reply(`Вы угадали! :orange_square: Это было ${queue[0].singer} - ${queue[0].title} :orange_square:`);
                 return collector.stop();
               }
 
-              message.guild.triviaData.triviaScore.get(m.author.username)
-                .score++;
-              m.react('☑');
+                message.guild.triviaData.triviaScore.get(m.author.username)
+                  .score++;
+                  m.react('☑');
+                  m.reply(`Вы угадали! :orange_square: Это было ${queue[0].singer} - ${queue[0].title} :orange_square:`);
+                return collector.stop();
             } else if (
               m.content.toLowerCase() ===
-                queue[0].singer + ' ' + queue[0].title ||
-              m.content.toLowerCase() === queue[0].title + ' ' + queue[0].singer
+                this.CheckSinger(m.content, queue) + ' ' + queue[0].title.toLowerCase() ||
+              m.content.toLowerCase() === queue[0].title.toLowerCase() + ' ' + this.CheckSinger(m.content, queue)
             ) {
               if (
                 (songSingerFound && !songNameFound) ||
@@ -133,7 +167,8 @@ module.exports = class MusicTriviaCommand extends Command {
               ) {
                 message.guild.triviaData.triviaScore.get(m.author.username)
                   .score++;
-                m.react('☑');
+                  m.react('☑');
+                  m.reply(`Вы угадали! :orange_square: Это было ${queue[0].singer} - ${queue[0].title} :orange_square:`);
                 return collector.stop();
               }
               message.guild.triviaData.triviaScore.get(
@@ -141,8 +176,8 @@ module.exports = class MusicTriviaCommand extends Command {
               ).score =
                 message.guild.triviaData.triviaScore.get(m.author.username)
                   .score + 2;
-              m.react('☑');
-              return collector.stop();
+                  m.react('☑');
+                return collector.stop();
             } else {
               // wrong answer
               return m.react('❌');
@@ -163,6 +198,8 @@ module.exports = class MusicTriviaCommand extends Command {
                 Array.from(message.guild.triviaData.triviaScore.entries())
               )
             );
+            if((songNameFound === false) && (songSingerFound === false))
+            message.say(`Никто не угадал! Это было :orange_square: ${queue[0].singer} - ${queue[0].title} :orange_square:`)
             queue.shift();
             dispatcher.end();
             return;
