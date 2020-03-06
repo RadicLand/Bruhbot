@@ -9,9 +9,9 @@ module.exports = class LyricsCommand extends Command {
     super(client, {
       name: 'lyrics',
       memberName: 'lyrics',
+      group: 'music',
       description:
         'Отправляет текст трека по запросу или текст уже играющего трека',
-      group: 'music',
       throttling: {
         usages: 1,
         duration: 5
@@ -26,6 +26,7 @@ module.exports = class LyricsCommand extends Command {
       ]
     });
   }
+
   async run(message, { songName }) {
     if (
       songName == '' &&

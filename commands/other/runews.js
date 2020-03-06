@@ -1,15 +1,15 @@
-const { MessageEmbed } = require('discord.js');
-const { newsAPI } = require('../../config.json');
 const { Command } = require('discord.js-commando');
+const { newsAPI } = require('../../config.json');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports = class YnetNewsCommand extends Command {
+module.exports = class RuNewsCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'runews',
       aliases: ['rusnews'],
-      group: 'other',
       memberName: 'runews',
+      group: 'other',
       description: 'Отправляет 5 последних новостей из России',
       throttling: {
         usages: 2,
@@ -19,7 +19,6 @@ module.exports = class YnetNewsCommand extends Command {
   }
 
   async run(message) {
-    // powered by NewsAPI.org
     try {
       const response = await fetch(
         `https://newsapi.org/v2/top-headlines?sources=google-news-ru&pageSize=5&apiKey=${newsAPI}`

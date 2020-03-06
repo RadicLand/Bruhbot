@@ -5,9 +5,10 @@ module.exports = class PruneCommand extends Command {
     super(client, {
       name: 'prune',
       aliases: ['delete', 'clear', 'nuke'],
-      description: 'Удалить до 99 сообщений',
+	  memberName: 'prune',
       group: 'guild',
-      memberName: 'prune',
+      description: 'Удалить до 99 сообщений',
+	  ownerOnly: true,
       guildOnly: true,
       userPermissions: ['MANAGE_CHANNELS', 'MANAGE_MESSAGES'],
       args: [

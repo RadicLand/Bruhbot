@@ -9,6 +9,7 @@ module.exports = class KickCommand extends Command {
       memberName: 'kick',
       group: 'guild',
       description: 'Кикает указанного участника',
+	  ownerOnly: true,
       guildOnly: true,
       userPermissions: ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS'],
       args: [
@@ -34,10 +35,9 @@ module.exports = class KickCommand extends Command {
     user
       .kick(reason)
       .then(() => {
-        //message.say(`Kicked ${userToKick} reason: ${reason}`)
         const kickEmbed = new MessageEmbed()
-          .addField('Kicked:', userToKick)
-          .addField('Reason:', reason)
+          .addField('Кикнул:', userToKick)
+          .addField('Причина:', reason)
           .setColor('#420626');
         message.channel.send(kickEmbed);
       })

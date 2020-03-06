@@ -18,9 +18,8 @@ module.exports = class SayCommand extends Command {
     });
   }
 
-
   run(message, { text }) {
-	if(message.channel.type !== 'dm')  
+	if(message.channel.type !== 'dm')
     message.channel
       .bulkDelete(1)
       .then(messages => message.say(text))
@@ -30,7 +29,7 @@ module.exports = class SayCommand extends Command {
           'Не получилось отправить сообщение :('
         )
       })
-	  else if (message.channel.type === 'dm')
+	else if (message.channel.type === 'dm')
         return message.say(text)
   }
 }

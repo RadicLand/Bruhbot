@@ -8,8 +8,8 @@ module.exports = class JojoCommand extends Command {
     super(client, {
       name: 'jojo',
       aliases: ['jojo-gif', 'jojo-gifs'],
-      group: 'gifs',
       memberName: 'jojo',
+      group: 'gifs',
       description: 'Отправляет гиф связанную с ЖОЖО!',
       throttling: {
         usages: 2,

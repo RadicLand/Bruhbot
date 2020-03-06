@@ -1,15 +1,15 @@
+const { Command } = require('discord.js-commando');
+const { newsAPI } = require('../../config.json');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
-const { newsAPI } = require('../../config.json');
-const { Command } = require('discord.js-commando');
 
-module.exports = class GlobalNewsCommand extends Command {
+module.exports = class WorldNewsCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'worldnews',
-      aliases: ['global-news', 'reuters'],
-      group: 'other',
+      aliases: ['globalnews'],
       memberName: 'worldnews',
+      group: 'other',
       description: 'Отправляет последние 5 мировых новостей',
       throttling: {
         usages: 2,
@@ -24,9 +24,9 @@ module.exports = class GlobalNewsCommand extends Command {
         `https://newsapi.org/v2/top-headlines?sources=reuters&pageSize=5&apiKey=${newsAPI}`
       );
       const json = await response.json();
-      const articleArr = json.articles;
+      let articleArr = json.articles;
       let processArticle = article => {
-        const embed = new MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor('#FF4F00')
           .setTitle(article.title)
           .setURL(article.url)
@@ -38,15 +38,15 @@ module.exports = class GlobalNewsCommand extends Command {
         return embed;
       };
       async function processArray(array) {
-        for (const article of array) {
-          const msg = await processArticle(article);
+        for (let article of array) {
+          let msg = await processArticle(article);
           message.say(msg);
         }
       }
       await processArray(articleArr);
-    } catch (e) {
+    } catch (err) {
       message.say('Что-то пошло не так :(');
-      return console.error(e);
+      return console.error(err);
     }
   }
 };

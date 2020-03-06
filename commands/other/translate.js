@@ -10,8 +10,7 @@ module.exports = class TranslateCommand extends Command {
       name: 'translate',
       memberName: 'translate',
       group: 'other',
-      description:
-        'Переводит отправленное сообщение используя Yandex API(только поддерживаемые языки)',
+      description: 'Переводит отправленное сообщение используя Yandex API(только поддерживаемые языки)',
       throttling: {
         usages: 2,
         duration: 12

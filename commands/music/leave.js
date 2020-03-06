@@ -5,10 +5,10 @@ module.exports = class LeaveCommand extends Command {
     super(client, {
       name: 'leave',
       aliases: ['end'],
-      group: 'music',
       memberName: 'leave',
-      guildOnly: true,
-      description: 'Выходит из голосового канала'
+      group: 'music',
+      description: 'Выходит из голосового канала',
+      guildOnly: true
     });
   }
 

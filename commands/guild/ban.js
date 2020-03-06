@@ -9,6 +9,7 @@ module.exports = class BanCommand extends Command {
       memberName: 'ban',
       group: 'guild',
       description: 'Банит указанного участника',
+	  ownerOnly: true,
       guildOnly: true,
       userPermissions: ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS'],
       args: [
@@ -36,8 +37,8 @@ module.exports = class BanCommand extends Command {
       .ban(reason)
       .then(() => {
         const banEmbed = new MessageEmbed()
-          .addField('Banned:', userToBan)
-          .addField('Reason', reason)
+          .addField('Забанил:', userToBan)
+          .addField('Причина:', reason)
           .setColor('#420626');
         message.channel.send(banEmbed);
       })

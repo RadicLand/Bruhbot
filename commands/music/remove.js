@@ -17,6 +17,7 @@ module.exports = class RemoveSongCommand extends Command {
       ]
     });
   }
+
   run(message, { songNumber }) {
     if (songNumber < 1 && songNumber >= message.guild.musicData.queue.length) {
       return message.reply('Пожалуйста, укажите правильный номер трека');

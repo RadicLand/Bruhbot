@@ -5,10 +5,10 @@ module.exports = class VolumeCommand extends Command {
     super(client, {
       name: 'volume',
       aliases: ['change-volume'],
-      group: 'music',
       memberName: 'volume',
-      guildOnly: true,
+      group: 'music',
       description: 'Меняет текущую громкость',
+      guildOnly: true,
       throttling: {
         usages: 1,
         duration: 5

@@ -6,8 +6,7 @@ module.exports = class SkipToCommand extends Command {
       name: 'skipto',
       memberName: 'skipto',
       group: 'music',
-      description:
-        'Пропускает всю очередь до указанного трека, укажите номер трека в сообщении',
+      description: 'Пропускает всю очередь до указанного трека. Укажите номер трека в сообщении',
       guildOnly: true,
       args: [
         {

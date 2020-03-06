@@ -11,6 +11,7 @@ module.exports = class ShuffleQueueCommand extends Command {
       guildOnly: true
     });
   }
+
   run(message) {
     var voiceChannel = message.member.voice.channel;
     if (!voiceChannel) return message.reply('Войдите в голосовой канал и попробуйте снова');

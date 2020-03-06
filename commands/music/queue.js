@@ -6,10 +6,10 @@ module.exports = class QueueCommand extends Command {
     super(client, {
       name: 'queue',
       aliases: ['song-list', 'next-songs'],
-      group: 'music',
       memberName: 'queue',
-      guildOnly: true,
-      description: 'Показать текущую очередь треков'
+      group: 'music',
+      description: 'Показать текущую очередь треков',
+	  guildOnly: true
     });
   }
 

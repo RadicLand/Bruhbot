@@ -6,9 +6,9 @@ module.exports = class GifCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'gif',
-      group: 'gifs',
       aliases: ['search-gif', 'search-gifs'],
       memberName: 'gif',
+      group: 'gifs',
       description: 'Отправляет гиф по заданному запросу!',
       throttling: {
         usages: 1,

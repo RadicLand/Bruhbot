@@ -5,10 +5,10 @@ module.exports = class LoopCommand extends Command {
     super(client, {
       name: 'loop',
 	  aliases: ['repeat'],
-      group: 'music',
       memberName: 'loop',
-      guildOnly: true,
-      description: 'Ставит текущий трек на повтор'
+      group: 'music',
+      description: 'Ставит текущий трек на повтор',
+      guildOnly: true
     });
   }
 
