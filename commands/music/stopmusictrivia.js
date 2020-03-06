@@ -4,12 +4,7 @@ module.exports = class StopMusicTriviaCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'stop-trivia',
-      aliases: [
-        'stop-music-trivia',
-        'skip-trivia',
-        'end-trivia',
-        'stop-trivia'
-      ],
+      aliases: ['end-trivia', 'stop-trivia', 'et'],
       memberName: 'stop-trivia',
       group: 'music',
       description: 'Останавливает Тривию',
@@ -17,6 +12,7 @@ module.exports = class StopMusicTriviaCommand extends Command {
       clientPermissions: ['SPEAK', 'CONNECT']
     });
   }
+
   run(message) {
     if (!message.guild.triviaData.isTriviaRunning)
       return message.say('Тривия сейчас не запущена');
@@ -25,7 +21,7 @@ module.exports = class StopMusicTriviaCommand extends Command {
       return message.say("Войдите в голосовой канал Тривии и попробуйте снова");
     }
 
-    if (!message.guild.triviaData.triviaScore.has(message.member.displayName)) {
+    if (!message.guild.triviaData.triviaScore.has(message.author.username)) {
       return message.say(
         'Вам нужно участвовать в Тривии для того, чтобы остановить её'
       );
